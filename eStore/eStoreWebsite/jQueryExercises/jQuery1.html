@@ -1,0 +1,53 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link href="../Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="../Content/jQueryExercises.css" rel="stylesheet" />
+    <title>jQuery Exercise #1</title>
+</head>
+<body>
+    <div class="row" style="left:10%;position:relative;">
+        <h3>jQuery 1 - Highlight a Row</h3>
+        <div class="col-xs-5 col-sm-4 col-md-3 col-lg-2 ">
+            <div class="table-bordered">
+                <div class="line">
+                    <span id="SomeID">1.</span>
+                    <span id="FirstName">George</span>
+                    <span id="LastName">Jetson</span>
+                </div>
+                <div class="line">
+                    <span id="SomeID">2.</span>
+                    <span id="FirstName">Jane&nbsp;&nbsp;</span>
+                    <span id="LastName">Jetson</span>
+                </div>
+                <div class="line">
+                    <span id="SomeID">3.</span>
+                    <span id="FirstName">Elroy&nbsp;</span>
+                    <span id="LastName">Jetson</span>
+                </div>
+            </div>
+            <div class="col-lg-12">
+                <a href="jQuery2.html">Next</a>
+            </div>
+        </div>
+    </div>
+    <script src="../Scripts/jquery-2.1.4.min.js"></script>
+    <script type="text/javascript">
+
+        $(function () {
+
+            var oldLine;
+
+            $('span').on('click', function () { // click on a span in
+                if (oldLine != null)
+                    $(oldLine).toggleClass('itemSelected');
+                $(this).parent().addClass('itemSelected');
+                oldLine = $(this).parent();
+            });
+
+        });
+
+    </script>
+
+</body>
+</html>

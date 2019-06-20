@@ -1,0 +1,42 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+
+<div class="panel-title text-center">
+    <h3 class="panel-heading">Find Some Stores Near You</h3>
+    <img alt="my store" src="~/img/images3.jpeg" class="orderpoppimg" />
+    <b> Your Address</b>
+    <input type="text" id="address" value="N5Y-5R6" />
+    <br />
+    <i>Example: London, ON or N5Y5R6 or 1460 Oxford st., London On</i>
+    <br />
+    <br />
+    <div class="grid_7 push_2" id="actions">
+        <input type="button" id="findthem" class="btn btn-danger" value="Search" />
+    </div>
+    <br />
+</div>
+<div class="modal" id="maps_popup">
+    <div class="modal-dialog">
+<div class="modal-content">
+<div class="modal-header"></div>
+<button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+    <center><img src="~/img/images3.jpeg" style="height: 40px; width: 40px" /></center>
+<div style="font-size: x-large; text-align:center;">
+
+<h3>Closest 3 Branches</h3>
+  </div>
+</div>
+<div class="modal-body">
+<div id="map-container" style="padding-left:5px;">
+<div id="map_canvas">
+     </div>
+    </div>
+  </div>
+ </div>
+</div>
+
+
+<script src="http://maps.googleapis.com/maps/api/js?v=3.18"></script>

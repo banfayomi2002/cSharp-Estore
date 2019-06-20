@@ -1,0 +1,180 @@
+﻿@model List<eStoreWebsite.Models.OrderModel>
+@{
+    ViewBag.Title = "Index";
+}
+
+<div class="row" align="center" style="left:30%; position:relative;">
+    <div class=" col-xs-5 col-sm-5 col-md-5 col-lg-5 ">
+        <div class=" table-bordered">
+            <h4>Past Orders</h4>
+            <img src="~/img/images3.jpeg" style="height: 70px; width: 70px" />
+            <div class="viewDetails" style=" margin-top:10px">
+                <div class="text-center alert alert-danger" id="orderHead">
+                    <div class="col-lg-4 col-md-3 col-sm-4 col-xs-4">Order ID</div>
+                    <div class="col-lg-8 col-md-9 col-sm-8 col-xs-8">Date</div>
+                </div>
+                <input type="hidden" id="userid" value="@Session["userid"]" />
+                @foreach (eStoreWebsite.Models.OrderModel item in Model)
+                {
+                    
+                    <div class="line row text-center" id="orderRow">
+                        <span id="oidID" class="col-lg-4 col-md-3 col-sm-4 col-xs-4 text-center">
+
+                            @item.OrderID
+                        </span>
+                        <span id="dateID" class="col-lg-8 col-md-9 col-sm-8 col-xs-8">
+                            @item.OrderDate
+                        </span>
+                    </div>
+
+                }
+            </div>
+
+        </div>
+    </div>
+</div>
+               
+<div class="modal" id="popup">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+                <center><img src="~/img/images3.jpeg" style="height: 40px; width: 40px" /></center>
+            </div>
+            <div class="modal-body">
+                <table border="1" style="background-color: #fff; width: 100%;padding-top:10px;">
+                    <tr>
+                        <td>
+                            <table id="popupTbl"></table>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../Scripts/jquery-2.1.4.min.js"></script>
+<script src="../Scripts/bootstrap.min.js"></script>
+<link href="../Content/jQueryExercises.css" rel="stylesheet" />
+<script type="text/javascript">
+    var allOrders;
+    var tbl = $('<table>')
+    $(function () {
+
+    
+        var oldLine;
+        var span;
+
+
+        $('span').on('click', function () {
+            span = $(this);
+            //if (span.attr('id') == 'dateID') var orderDate = span.text();
+            if (span.attr('id') == 'oidID') {
+                $(oldLine).toggleClass('orderSelected');
+                span.parent().addClass('orderSelected');
+                oldLine = span.parent();
+                $("#popup").modal("show");
+                getOrders(span.text(), $(this).next().text().trim(), allOrders);
+                //tableBuilder(span.text(), data, tbl);
+
+            }
+            else {
+                alert('Please click on the Order ID!');
+            }
+        });
+
+    }); // main jQuery function
+
+    //getOrders
+    //  - obtain the order# from click event, call server for JSON array using WebAPI
+    //  -   for this customer(hidden field) pass array, order# and order date to build routine
+    function getOrders(oid, orderDate, allOrders) {
+        if (allOrders == null) {    //only go to the server once
+            $.getJSON("api/orders/" + $("#userid").val(), null, function (data, status, jqXHR) {
+                buildOrder(oid, orderDate, data);   // call is asynchronous, so build in if before loading global data for else problem
+                allOrders = data;
+            }).error(function (jqXHR, textStatus, errorThrown) {
+                console.log(textStatus + " - " + errorThrown);
+            });
+        }
+        else {
+            buildOrder(oid, orderDate, allOrders);
+        }
+    } // getOrders
+
+
+    function buildOrder(oid, orderDate, data) {
+        var tbl = $('<table>').addClass('dynaTable');
+        // delete rows from old table (if it exists)
+        $(tbl).find("tr").remove();
+
+        var tr = $("<tr>");
+        tr.html('<td colspan="3" class="tblItemBigHead">Order: ' + oid + '</td>'
+                    + '<td colspan="3" class="tblItemBigHead">Date: ' + orderDate + '</td>');
+        tr.appendTo(tbl);      // add row to table
+
+        /* Row */
+        tr = $("<tr>");
+        tr.html('<td style="width:35%" class="tblItemHead">Product Name</td>' +
+                '<td style="width:15%" class="tblItemHead">Sell Price</td>' +
+                '<td style="width:10%" class="tblItemHead">QtyS</td>' +
+                '<td style="width:10%" class="tblItemHead">QtyO</td>' +
+                '<td style="width:10%" class="tblItemHead">QtyB</td>' +
+                '<td style="width:20%" class="tblItemHead">Extended</td>');
+        tr.appendTo(tbl);      // add row to table
+        subTotal = 0;
+        $.each(data, function (index, order) {
+            if (oid == order.OrderID) {
+                tr = $("<tr>");
+                ext = parseFloat(order.SellingPrice);
+                ext = ext * parseInt(order.QtySold);
+                subTotal += ext;
+
+                tr.html('<td style="width:35%;">' + order.ProductName + '</td>' +
+                        '<td style="width:15%;">' + order.SellingPrice + '</td>' +
+                        '<td style="width:10%;">' + order.QtySold + '</td>' +
+                        '<td style="width:10%;">' + order.QtyOrdered + '</td>' +
+                        '<td style="width:10%; ">' + order.QtyBackOrdered + '</td>' +
+                        '<td style="width:20%;">' + curFmt(ext) + '</td>');
+                tr.appendTo(tbl);      // add row to table
+            }  // end if
+        });   // end each
+
+        tr = $("<tr>").addClass("itemBottom");
+        tr.html('<td colspan="3">' + '</td>' +
+                '<td style="text-align:right; padding-right:20px; border-top: 1px solid #CDC1A7;" colspan="3">'
+                 + "Sub Total : " + curFmt(subTotal) + '</td>');
+        tr.appendTo(tbl);
+        tr = $("<tr>").addClass("itemBottom");
+        tr.html('<td colspan="3">' + '</td>' + '<td style="text-align:right; padding-right:20px;" colspan="3">'
+                 + "Tax : " + curFmt(subTotal * 0.13) + '</td>');
+        tr.appendTo(tbl);
+        tr = $("<tr>").addClass("itemBottom");
+        tr.html('<td colspan="3">' + '</td>' +
+                '<td class="orderSelected" style="text-align:right; padding-right:20px;" colspan="3">'
+                 + "Total : " + curFmt(subTotal * 1.13) + '</td>');
+        tr.appendTo(tbl);
+
+        $('#popupTbl').find("tr").remove();      // clean out old stuff
+        $('#popupTbl').append($(tbl).html());    // put in new stuff
+        $('#popup').modal('show');
+    }
+
+    // obtained from the internet unknown source
+    function curFmt(num) {
+        num = num.toString().replace(/\$|\,/g, '');
+        if (isNaN(num))
+            num = "0";
+        sign = (num == (num = Math.abs(num)));
+        num = Math.floor(num * 100 + 0.50000000001);
+        cents = num % 100;
+        num = Math.floor(num / 100).toString();
+        if (cents < 10)
+            cents = "0" + cents;
+        for (var i = 0; i < Math.floor((num.length - (1 + i)) / 3) ; i++)
+            num = num.substring(0, num.length - (4 * i + 3)) + ',' +
+            num.substring(num.length - (4 * i + 3));
+        return (((sign) ? '' : '-') + '$' + num + '.' + cents);
+    } //curFmt
+
+</script>

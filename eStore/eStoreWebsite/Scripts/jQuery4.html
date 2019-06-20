@@ -1,0 +1,133 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link href="../Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="../Content/jQueryExercises.css" rel="stylesheet" />
+    <title>jQuery Exercise #4</title>
+</head>
+<body>
+    <div class="row" style="left:10%;position:relative;">
+        <h4>jQuery 4 - Dynamic table with JSON data</h4>
+        <div class="col-xs-3 col-sm-2 col-md-2 col-lg-1 ">
+            <div class="table-bordered">
+                <span>Note #</span>
+            </div>
+            <div class="table-bordered">
+                <div class="line">
+                    <span id="SomeID">1</span>
+                </div>
+                <div class="line">
+                    <span id="SomeID">2</span>
+                </div>
+                <div class="line">
+                    <span id="SomeID">3</span>
+                </div>
+                <div class="line">
+                    <span id="SomeID">4</span>
+                </div>
+            </div>
+            <div class="col-lg-12">
+                <a href="jQuery3.html">Previous</a>
+            </div>
+            <div class="col-lg-12">
+                <a href="jQuery5.html">Next</a>
+            </div>
+        </div>
+    </div>
+    <script src="../Scripts/jquery-2.1.4.min.js"></script>
+    <script type="text/javascript">
+
+        $(function () {
+
+            var tbl = $('<table>').addClass('dynaTable');
+            var oldLine;
+            var span;
+
+            // hardcoded JSON object array
+            var collNotes =
+               {
+                   'notes': [
+                     { 'id': '1', 'to': 'worker', 'from': 'boss', 'heading': 'Coffee', 'notebody': 'Remember to grab some coffee and donuts on the way in today', 'cost':'12.99' },
+                     { 'id': '2', 'to': 'worker', 'from': 'boss', 'heading': 'Dry Cleaning', 'notebody': 'Remember to pick up my dry cleaning!', 'cost':'19.99' },
+                     { 'id': '3', 'to': 'worker', 'from': 'boss', 'heading': 'Lunch', 'notebody': 'Pick up some Chinese food for lunch', 'cost':'29.99' },
+                     { 'id': '4', 'to': 'worker', 'from': 'boss', 'heading': 'Car', 'notebody': 'Please get my car washed this afternoon', 'cost':'14.67' }
+                   ]
+               }
+
+            $('span').on('click', function () {
+                span = $(this);
+
+                if (span.attr('id') == 'SomeID') // only the id spans work
+                {
+                    $(oldLine).toggleClass('itemSelected');
+                    span.parent().addClass('itemSelected');
+                    oldLine = span.parent();
+                    tableBuilder(span.text(), collNotes, tbl);
+                }
+                else
+                {
+                    alert('Click on the number under ID!');
+                }
+            });
+
+        }); // main jQuery function
+
+
+        function tableBuilder(noteNo, collNotes, tbl) {
+
+            // delete rows from old table (if it exists)
+            $(tbl).find("tr").remove();
+
+            /* Row */
+            var tr = $("<tr>");
+            tr.html('<td colspan="5" class="tblItemBigHead">Note # ' + noteNo + '</td>');
+            tr.appendTo(tbl);      // add row to table
+
+            /* Row */
+            tr = $("<tr>");
+            tr.html('<td style="width:20%" class="tblItemHead">From</td>' +
+                    '<td style="width:15%" class="tblItemHead">To</td>' +
+                    '<td style="width:15%" class="tblItemHead">Topic</td>' +
+                    '<td style="width:35%" class="tblItemHead">Message</td>' +
+                    '<td style="width:15%" class="tblItemHead">Cost</td>');
+            tr.appendTo(tbl);      // add row to table
+
+            $.each(collNotes.notes, function (index, note) {
+                // select correct note
+                tr = $("<tr>").addClass("itemData");
+
+                if (noteNo == note.id) { // id
+                    tr.html('<td style="width:20%;">' + note.from + '</td>' +
+                            '<td style="width:15%;">' + note.to + '</td>' +
+                            '<td style="width:15%;">' + note.heading + '</td>' +
+                            '<td style="width:35%;">' + note.notebody + '</td>' +
+                            '<td style="width:10%;">' + curFmt(note.cost) + '</td>'+
+                            '<td style="width:5%;">' + curFmt(10));
+                    tr.appendTo(tbl);      // add row to table
+                }  // end if
+
+            });   // end each
+
+            $("body").append(tbl); // add table to body
+        }
+
+        // obtained from the internet unknown source
+        function curFmt(num) {
+            num = num.toString().replace(/\$|\,/g, '');
+            if (isNaN(num))
+                num = "0";
+            sign = (num == (num = Math.abs(num)));
+            num = Math.floor(num * 100 + 0.50000000001);
+            cents = num % 100;
+            num = Math.floor(num / 100).toString();
+            if (cents < 10)
+                cents = "0" + cents;
+            for (var i = 0; i < Math.floor((num.length - (1 + i)) / 3) ; i++)
+                num = num.substring(0, num.length - (4 * i + 3)) + ',' +
+                num.substring(num.length - (4 * i + 3));
+            return (((sign) ? '' : '-') + '$' + num + '.' + cents);
+        } //curFmt
+
+    </script>
+</body>
+</html>

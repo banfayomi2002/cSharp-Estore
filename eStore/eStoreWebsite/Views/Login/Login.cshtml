@@ -1,0 +1,75 @@
+﻿@model eStoreWebsite.Models.UserModel
+@{
+    ViewBag.Title = "Login";
+}
+<!--pop up form-->
+<div class="modal" id="login_popup">
+    <div class="modal-dialog" style="width: 400px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+                <div style="font-size: x-large;  text-align: center;">
+                    <img src="~/img/images3.jpeg" alt="Logo" style="height: 50px;" />
+                    <br />
+                    <br />
+                    Enter Credentials!
+                </div>
+            </div>
+            <script type="text/javascript">
+                // server bilds the message, just display it either way
+                var onSuccess = function (result) {
+                    if (result == 'Success')
+                        window.location.href = "/";
+                    else
+                        $('#ajaxMsg').text(result);
+                }
+            </script>
+            @section Scripts{
+                <script type="text/javascript">
+                    $('#login_popup').modal('show');
+                </script>
+            }
+
+            @using (Ajax.BeginForm("LoginAsync", "Login", new AjaxOptions
+            {
+                InsertionMode = InsertionMode.Replace,
+                HttpMethod = "POST",
+                LoadingElementId = "ajaxSplash",
+                UpdateTargetId = "ajaxMsg",
+                OnSuccess = "onSuccess",
+                OnFailure = "onSuccessOrFailure"
+            }))
+            {
+                @Html.AntiForgeryToken()
+                
+                <div class="text-center" style="padding:20px;">
+                    <div class="form-horizontal">
+                        @Html.ValidationSummary(true)
+                        <br />
+                        <div class="form-group" style="text-align: center;">
+                            <div class="col-md-10">
+                                @Html.TextBoxFor(model => model.UserName, new { placeholder = "Username" })
+                                <div>@Html.ValidationMessageFor(model => model.UserName, "", new { style = "color: red;" })</div>
+                            </div>
+                        </div>
+
+                        <div class="form-group" style="text-align: center;">
+                            <div class="col-md-10">
+                                @Html.PasswordFor(model => model.Password, new { placeholder = "Password" })
+                                <div>@Html.ValidationMessageFor(model => model.Password, "", new { style = "color: red;" })</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer" style="text-align: center;">
+                    <input type="submit" class="btn btn-primary" value="Login" />
+                </div>
+            }
+            <div class="modal-footer">
+                <div id="ajaxMsg"></div>
+                <div id="ajaxSplash" style="display:none; z-index:60; ">Loggin in...</div>
+            </div>
+
+        </div>
+    </div>
+</div>

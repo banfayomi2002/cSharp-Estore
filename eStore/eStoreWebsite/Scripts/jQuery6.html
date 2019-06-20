@@ -1,0 +1,186 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link href="../Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="../Content/jQueryExercises.css" rel="stylesheet" />
+ 
+
+    <title>jQuery Exercise #5</title>  
+     
+</head>
+
+<body>
+    <div class="row" style="left:10%;position:relative;">
+       
+        <h4>jQuery 6 - Dynamic table with JSON data in a Bootstrap Modal</h4>
+        <div class="col-xs-3 col-sm-2 col-md-2 col-lg-1 ">
+            <div class="table-bordered">
+                <span>Note #</span>
+            </div>
+            <div class="table-bordered">
+                <div class="line">
+                    <span id="SomeID">1</span>
+                </div>
+                <div class="line">
+                    <span id="SomeID">2</span>
+                </div>
+                <div class="line">
+                    <span id="SomeID">3</span>
+                </div>
+                <div class="line">
+                    <span id="SomeID">4</span>
+                </div>
+            </div>
+            <div class="col-lg-12">
+                <a href="jQuery4.html">Previous</a>
+            </div>
+            <div class="col-lg-12">
+                <a href="jQuery6.html">Next</a>
+            </div>
+        </div>
+    </div>
+    <div class="modal" id="popup">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+                    <div style="font-size: x-large;  text-align: center;">
+                        <img src="data:image/jpeg;base64,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" style="height: 80px;">
+                         <br />
+                    </div>
+                <div class="modal-body">
+                    <table border="1" style="background-color: #fff; width: 100%;padding-top:10px;">
+                        <tr>
+                            <td>
+                                <table id="popupTbl"></table>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="../Scripts/jquery-2.1.4.min.js"></script>
+    <script src="../Scripts/bootstrap.min.js"></script>
+    <script type="text/javascript">
+
+        $(function () {
+
+            var tbl = $('<table>').addClass('dynaTable');
+            var oldLine;
+            var span;
+
+            // hardcoded JSON object array
+            var collNotes =
+               {
+                   'notes': [
+                     { 'id': '1', 'to': 'worker', 'from': 'boss', 'heading': 'Coffee', 'notebody': 'Remember to grab some coffee and donuts on the way in today', 'cost': '12.99' },
+                     { 'id': '2', 'to': 'worker', 'from': 'boss', 'heading': 'Dry Cleaning', 'notebody': 'Remember to pick up my dry cleaning!', 'cost': '19.99' },
+                     { 'id': '3', 'to': 'worker', 'from': 'boss', 'heading': 'Lunch', 'notebody': 'Pick up some Chinese food for lunch', 'cost': '29.99' },
+                     { 'id': '4', 'to': 'worker', 'from': 'boss', 'heading': 'Car', 'notebody': 'Please get my car washed this afternoon', 'cost': '14.67' }
+                   ]
+               }
+
+            $('span').on('click', function () {
+                span = $(this);
+
+                if (span.attr('id') == 'SomeID') // only the id spans work
+                {
+                    $(oldLine).toggleClass('itemSelected');
+                    span.parent().addClass('itemSelected');
+                    oldLine = span.parent();
+                    tableBuilder(span.text(), collNotes, tbl);
+                }
+                else {
+                    alert('Click on the number under ID!');
+                }
+            });
+
+        }); // main jQuery function
+
+
+        function tableBuilder(noteNo, collNotes, tbl) {
+
+            // delete rows from old table (if it exists)
+            $(tbl).find("tr").remove();
+
+            /* Row */
+            var tr = $("<tr>");
+            tr.html('<td colspan="5" class="tblItemBigHead">Note # ' + noteNo + '</td>');
+            tr.appendTo(tbl);      // add row to table
+
+            /* Row */
+            tr = $("<tr>");
+            tr.html('<td style="width:20%" class="tblItemHead">From</td>' +
+                    '<td style="width:15%" class="tblItemHead">To</td>' +
+                    '<td style="width:15%" class="tblItemHead">Topic</td>' +
+                    '<td style="width:35%" class="tblItemHead">Message</td>' +
+                    '<td style="width:15%" class="tblItemHead">Cost</td>');
+            tr.appendTo(tbl);      // add row to table
+
+            subtotal = 0;
+            $.each(collNotes.notes, function (index, note) {
+                // select correct note
+                tr = $("<tr>").addClass("itemData");
+
+                if (noteNo == note.id) { // id
+                    tr.html('<td style="width:20%;">' + note.from + '</td>' +
+                            '<td style="width:15%;">' + note.to + '</td>' +
+                            '<td style="width:15%;">' + note.heading + '</td>' +
+                            '<td style="width:35%;">' + note.notebody + '</td>' +
+                            '<td style="width:10%;">' + curFmt(note.cost) + '</td>');
+                   
+                    tr.appendTo(tbl);      // add row to table
+                    subtotal += note.cost;
+
+                    tr = $("<tr>").addClass("itemData");
+                    tr.html('<td colspan="4"></td><td><hr /></td>');
+                    tr.appendTo(tbl);
+                    tr = $("<tr>").addClass("itemData");
+                    tr.html('<td colspan="5" class="text-right" style="padding-right: 10px;">Sub: ' + curFmt(subtotal) + '</td>');
+                    tr.appendTo(tbl);
+                    tr = $("<tr>").addClass("itemData");
+                    tr.html('<td colspan="5" class="text-right" style="padding-right: 10px;">Tax: ' + curFmt(subtotal * 0.13) + '</td>');
+                    tr.appendTo(tbl);
+                    tr = $("<tr>").addClass("itemData");
+                    tr.html('<td colspan="5" class="text-right" style="padding-right: 10px;">Total: ' + curFmt(subtotal * 1.13) + '</td>');
+                    tr.appendTo(tbl);
+                    
+                    tr.appendTo(tbl);      // add row to table
+                    
+                }  // end if
+
+
+            
+            });
+            // end each
+          
+
+          
+
+            $('#popupTbl').find("tr").remove();      // clean out old stuff
+            $('#popupTbl').append($(tbl).html());    // put in new stuff
+            $('#popup').modal('show');
+        }
+
+    
+        // obtained from the internet unknown source
+        function curFmt(num) {
+            num = num.toString().replace(/\$|\,/g, '');
+            if (isNaN(num))
+                num = "0";
+            sign = (num == (num = Math.abs(num)));
+            num = Math.floor(num * 100 + 0.50000000001);
+            cents = num % 100;
+            num = Math.floor(num / 100).toString();
+            if (cents < 10)
+                cents = "0" + cents;
+            for (var i = 0; i < Math.floor((num.length - (1 + i)) / 3) ; i++)
+                num = num.substring(0, num.length - (4 * i + 3)) + ',' +
+                num.substring(num.length - (4 * i + 3));
+            return (((sign) ? '' : '-') + '$' + num + '.' + cents);
+        } //curFmt
+
+        </script>
+    </body>
+    </html>

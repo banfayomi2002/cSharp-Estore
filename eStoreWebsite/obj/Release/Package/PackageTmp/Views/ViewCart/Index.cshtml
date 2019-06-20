@@ -1,0 +1,103 @@
+﻿@model eStoreWebsite.Models.OrderModel
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<center>
+    <h2>CART CONTENTS</h2>
+    <img src="~/Images/cart.jpg" style="height: 120px;">
+</center>
+
+<br />
+<div class="row text-center">
+    <div id="ajaxMsg"></div>
+    <div id="ajaxSplash" style="display: none; z-index: 60;">Wait...</div>
+</div>
+
+<script type="text/javascript">
+    // server bilds the message, just display it either way
+    var onSuccessOrFailure = function (result) {
+
+        $('#ajaxMsg').text(result);
+    }
+    </script>
+@using (
+                    Ajax.BeginForm("genOrder", "ViewCart", new AjaxOptions
+                    {
+                          LoadingElementId = "ajaxSplash",
+                          InsertionMode = InsertionMode.Replace,
+                          HttpMethod = "POST",
+                          OnSuccess = "onSuccessOrFailure",
+                          OnFailure = "onSuccessOrFailure",
+                        OnComplete = "$('#orderButton').hide()"
+                    }))
+{
+    @Html.AntiForgeryToken()
+    <div class="panel-body">
+        
+        <div class="viewDetails">
+
+            <div class="row text-center alert-danger">
+                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">Code</div>
+                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-3">Product Name</div>
+                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">Msrp</div>
+                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">Qty</div>
+                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 text-right">Extended</div>
+
+            </div>
+
+            @{
+    eStoreWebsite.Models.CartItemDTO[] cart = (eStoreWebsite.Models.CartItemDTO[])Session["cart"];
+    double extended = 0;
+    double tax = 0;
+    double total = 0;
+    double amt = 0;
+    
+
+    if (cart != null)
+    {
+        foreach (eStoreWebsite.Models.CartItemDTO item in cart)
+        {
+            if (item.Qty > 0)
+            {
+                extended = item.Qty * Convert.ToDouble(item.Msrp);
+                <div class="row text-center detail">
+                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">@item.ProductCode</div>
+                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-3">@item.ProductName</div>
+                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">@String.Format("{0:C}", Convert.ToDecimal(item.Msrp))</div>
+                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">@item.Qty</div>
+                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 text-right">@String.Format("{0:C}", Convert.ToDecimal(extended))</div>
+                </div>
+                amt += extended;
+            }
+            tax = amt * 0.13;
+            total = tax + amt;
+            Session["orderamt"] = total;
+            
+        }
+        <div class="row text-right">
+            <div class="col-lg-10 col-md-10 col-sm-10 col-xs-9">&nbsp;</div>
+            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-3 text-right"><hr /></div>
+
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 text-right">&nbsp;</div>
+            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">Sub Total : </div>
+            <div class="col-lg-3 col-md-2 col-sm-3 col-xs-3">@String.Format("{0:C}", Convert.ToDecimal(amt))</div>
+
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 text-right">&nbsp;</div>
+            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">Tax : </div>
+            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">@String.Format("{0:C}", Convert.ToDecimal(tax))</div>
+
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 text-right">&nbsp;</div>
+            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">Total : </div>
+            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">@String.Format("{0:C}", Convert.ToDecimal(total))</div>
+        </div>
+    }
+    <div class="row text-center">
+        <input style="margin-top: 20px;" id="orderButton" type="submit" class="btn-primary" value="check out" />
+      
+    </div>
+            }
+        </div>
+    </div>
+}
+

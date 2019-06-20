@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eStoreDAL", "eStoreDAL\eStoreDAL.csproj", "{6E3FA641-163B-40B8-85D7-0AD5B8120086}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eStoreWebsite", "eStoreWebsite\eStoreWebsite.csproj", "{8EB806F2-6BAF-47F0-86F9-771D22CC3D1B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eStoreDALIntegration", "eStoreDALIntegration\eStoreDALIntegration.csproj", "{443FB2BA-7529-4BFE-B99A-3A63D4F0CF01}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6E3FA641-163B-40B8-85D7-0AD5B8120086}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6E3FA641-163B-40B8-85D7-0AD5B8120086}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6E3FA641-163B-40B8-85D7-0AD5B8120086}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6E3FA641-163B-40B8-85D7-0AD5B8120086}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8EB806F2-6BAF-47F0-86F9-771D22CC3D1B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8EB806F2-6BAF-47F0-86F9-771D22CC3D1B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8EB806F2-6BAF-47F0-86F9-771D22CC3D1B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8EB806F2-6BAF-47F0-86F9-771D22CC3D1B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{443FB2BA-7529-4BFE-B99A-3A63D4F0CF01}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{443FB2BA-7529-4BFE-B99A-3A63D4F0CF01}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{443FB2BA-7529-4BFE-B99A-3A63D4F0CF01}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{443FB2BA-7529-4BFE-B99A-3A63D4F0CF01}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
